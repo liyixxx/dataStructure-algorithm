@@ -1,8 +1,11 @@
 package com.xin.dataStructure.linked.single;
 
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.Stack;
 
 /**
  * @Auther: xin
@@ -53,6 +56,30 @@ public class SingleLinkedListDemo {
         System.out.println("链表节点删除 :: ");
         linkedList.showLinkedList();
 
+        // ------------------------------------------------------- 面试题
+        System.out.println("\n------------------------------------------------------- some interview question --> test ：");
+        // 初始数据
+        SingleLinkedList interview = new SingleLinkedList();
+        interview.addNode(new HeroNode(1,"疾风剑豪","快乐风男"));
+        interview.addNode(new HeroNode(2,"德玛西亚之力","德玛"));
+        interview.addNode(new HeroNode(3,"发条魔灵","发条"));
+        interview.addNode(new HeroNode(4,"赏金猎人","MF"));
+        System.out.println("init linkedList");
+        interview.showLinkedList();
+
+        // ------------------------------------------------------- some interview question --> test
+        // 1. 求单链表中节点的个数
+        System.out.println("length : " + interview.length());
+        // 2. 求倒数第K个节点
+        System.out.println("node : " + interview.getLastIndexNode(4));
+        // 3. 链表反转
+        interview.reverseLinkedList();
+        System.out.println("reverse linkedList : ");
+        interview.showLinkedList();
+        // 4. 逆序打印
+        System.out.println("rever print by stack : ");
+        interview.reversePrint();
+
     }
 }
 
@@ -62,6 +89,7 @@ public class SingleLinkedListDemo {
 class SingleLinkedList{
 
     /** 头节点 , 无法修改 */
+    @Getter
     private HeroNode head  = new HeroNode();
 
     /**
@@ -234,6 +262,118 @@ class SingleLinkedList{
             System.out.println(tempNode);
             // 指针后移
             tempNode = tempNode.next ;
+        }
+    }
+
+    // ------------------------------------------------------- some interview question
+    // 1. 求单链表中节点的个数
+    // 2. 查找链表中的倒数第k个节点
+    // 3. 反转单链表
+    // 4. 倒叙打印单链表
+    // 5. 合并两个有序的单链表，合并之后的单链表仍然有序
+
+    /**
+     * 求单链表中节点的个数
+     * @return
+     */
+    public int length(){
+        if (head.next == null){
+            return 0 ;
+        }
+        int length = 0 ;
+        HeroNode node = this.head.next;
+        while (node != null){
+            length ++ ;
+            node = node.next ;
+        }
+        return length ;
+    }
+
+    /**
+     * 获取倒数第K个节点
+     * @param index
+     * @return
+     */
+    public HeroNode getLastIndexNode(int index){
+        if (index <= 0 || index > length()){
+            return null ;
+        }
+        HeroNode node = this.head.next;
+        for (int i = 0; i < length() - index; i++) {
+            node = node.next ;
+        }
+        return node ;
+    }
+
+    /**
+     * 反转链表 ：头节点插入法
+     * 新建一个头结点，遍历原链表，把每个节点用头结点插入到新建链表中。最后，新建的链表就是反转后的链表
+     *      1. 定义新的head节点 reverseHead
+     *      2. 定义临时节点，保存当前遍历节点的下一个节点 next
+     *      3. ** 遍历原来的链表，每遍历一个节点，就将其取出，并放在新的链表reverseHead 的最前端
+     *      过程：
+     *          3.1 : 保存下一次需要遍历的节点 ==>  next = node.next
+     *          3.2 : 拼接目标节点 ==>  node.next = reverseHead.next
+     *          3.3 : 取出当前节点，放在新链表的最前端 ==>  reverseHead.next = node
+     *          3.4 : 指针后移 ==>  node = node.next
+     *      4. 将源链表的next指向新链表的next ==>  head.next = reverseHead.next
+     *
+     */
+    public void reverseLinkedList(){
+        if (head.next == null){
+            return;
+        }
+        // 新的head节点
+        HeroNode reverseHead = new HeroNode();
+        // 遍历
+        HeroNode node = this.head.next;
+        // 临时节点，存放node.next
+        HeroNode next = null ;
+        while (node!=null){
+            // 临时节点
+            next = node.next ;
+            // ---------------------------------------------------------
+            //          强烈建议进行debug，查看链表的节点来进行理解
+
+            /**
+             * 核心步骤：
+             *   将节点指向新链表的队首
+             *   第一次循环时, node.next [id = 2],reverseHead.next[null] ,做头插 : 将node[id=1]插入到新链表的队首
+             *   第二次： node.next[id = 3] , reverseHead由于进行过头插了，队首数据发生改变，变为 node[id=1]
+             *           node.next = reverseHead.next 会修改当前的节点 node.next=3 会修改为 node.next=1,这样node的节点状态就变成了node[id=2] -> node[id=1]
+             *           然后再做头插法，把从新拼接的node链表拼接在新链表的队首 ,覆盖原有[node=1] 所以新链表的节点指向就变成了： node[id=2] -> node[id=1]
+             *   后续就会重复第二轮的过程，不断拼接node节点，然后将node节点放在新链表的队首
+             *   比如在第三次循环时， node节点就变成了 : node[id=3] -> node[id=2] -> node[id=1]  然后进行头插，到新的链表reverseHead中
+             */
+            node.next = reverseHead.next ;
+            // 对新链表做头插动作
+            reverseHead.next = node ;
+            // 后移指针
+            node = next ;
+        }
+        // 修改源链表head指向
+        head.next = reverseHead.next ;
+
+    }
+
+    /**
+     * 逆序打印链表 借助栈来实现
+     */
+    public void reversePrint(){
+        if(head.next == null) {
+            return;
+        }
+        // 创建栈
+        Stack stack = new Stack<HeroNode>();
+        HeroNode node = this.head.next;
+        while (node != null) {
+            stack.push(node);
+            node = node.next ;
+        }
+
+        // 打印
+        while (!stack.isEmpty()){
+            System.out.println(stack.pop());
         }
     }
 
