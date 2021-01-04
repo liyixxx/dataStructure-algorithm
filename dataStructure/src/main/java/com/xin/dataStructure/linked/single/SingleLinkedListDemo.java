@@ -73,7 +73,7 @@ public class SingleLinkedListDemo {
         // 2. 求倒数第K个节点
         System.out.println("node : " + interview.getLastIndexNode(4));
         // 3. 链表反转
-        interview.reverseLinkedList();
+        // interview.reverseLinkedList();
         System.out.println("reverse linkedList : ");
         interview.showLinkedList();
         // 4. 逆序打印
@@ -81,9 +81,123 @@ public class SingleLinkedListDemo {
         interview.reversePrint();
         // 5. 合并两个有序的单链表，要求结果依旧有序
         // 合并时需要保证传入链表有序，注释链表反转操作
-        // interview.mergeLinked(linkedList.getHead() , interview.getHead());
-        interview.mergeLinked2(linkedList.getHead() , interview.getHead());
+        // mergeLinked(linkedList.getHead() , interview.getHead());
+        mergeLinked2(linkedList.getHead() , interview.getHead());
     }
+
+    /**
+     * 合并两个有序的单链表，合并之后的单链表仍然有序
+     * @param head1     传入链表1的头节点
+     * @param head2     传入链表2的头节点
+     */
+    public static HeroNode mergeLinked(HeroNode head1 , HeroNode head2){
+        if (head1.next == null){
+            return head2 ;
+        }
+        if (head2.next == null){
+            return head1 ;
+        }
+
+        // 两个链表都不为空，进行遍历
+        HeroNode node1 = head1.next;
+        HeroNode node2 = head2.next;
+        // 结果链表的第一个节点
+        HeroNode head = null ;
+        // 结果链表的最后一个节点
+        HeroNode rear = null ;
+        // 结果链表
+        SingleLinkedList list = new SingleLinkedList();
+
+        // 两个链表都还有数据
+        while (node1 != null && node2 != null){
+            if (node1.no <= node2.no){
+                // 如果node1节点数据 <= node2节点数据， 将node1节点插入新链表且node1指针后移
+                if (head == null){
+                    // 选定头节点
+                    head = node1 ;
+                } else {
+                    rear.next = node1 ;
+                }
+                rear = node1 ;
+                node1 = node1.next ;
+            } else {
+                // 反之，将node2节点插入新链表且node2指针后移
+                if (head == null){
+                    // 选定头节点
+                    head = node2 ;
+                } else {
+                    rear.next = node2 ;
+                }
+                rear = node2 ;
+                node2 = node2.next ;
+            }
+        }
+        // 处理剩余不为空的链表
+        if (node1 != null){
+            rear.next = node1 ;
+        } else {
+            rear.next = node2 ;
+        }
+        // 结果链表节点
+        list.getHead().next = head ;
+
+        System.out.println("\n链表合并后的结果:");
+        list.showLinkedList();
+
+        return head ;
+    }
+
+    /**
+     * 合并有序链表 方式二 (更加直观易懂)
+     * @param head1
+     * @param head2
+     * @return
+     */
+    public static HeroNode mergeLinked2(HeroNode head1 , HeroNode head2){
+        if (head1.next == null){
+            return head2 ;
+        }
+        if (head2.next == null){
+            return head1 ;
+        }
+        // 两个链表都不为空，进行遍历
+        HeroNode node1 = head1.next;
+        HeroNode node2 = head2.next;
+        // 结果链表的第一个节点
+        HeroNode head = new HeroNode() ;
+        // 定义辅助指针，该指针永远指向第一个节点，不发生变化
+        HeroNode dummy = head ;
+
+        while (node1 != null && node2 != null){
+            if (node1.no <= node2.no){
+                // 如果node1.no <= node2.no  将node1节点拼接到head节点后,同时node1指针后移
+                head.next = node1 ;
+                node1 = node1.next ;
+            } else {
+                // 反之 将node2节点拼接到head节点后,同时node2指针后移
+                head.next = node2 ;
+                node2 = node2.next ;
+            }
+            // 在head节点拼接完成之后，将head节点后移，否则就是在不断的修改head.next 而不是向链表后面追加元素
+            head = head.next ;
+        }
+
+        // 后续链表元素追加
+        if (node1 != null){
+            head.next = node1 ;
+        } else {
+            head.next = node2 ;
+        }
+
+        SingleLinkedList list = new SingleLinkedList();
+        list.getHead().next = dummy.next ;
+
+        System.out.println("\n方式二，链表合并后的结果:");
+        list.showLinkedList();
+
+        return dummy.next ;
+    }
+
 }
 
 /**
@@ -380,118 +494,6 @@ class SingleLinkedList{
         }
     }
 
-    /**
-     * 合并两个有序的单链表，合并之后的单链表仍然有序
-     * @param head1     传入链表1的头节点
-     * @param head2     传入链表2的头节点
-     */
-    public HeroNode mergeLinked(HeroNode head1 , HeroNode head2){
-        if (head1.next == null){
-            return head2 ;
-        }
-        if (head2.next == null){
-            return head1 ;
-        }
-
-        // 两个链表都不为空，进行遍历
-        HeroNode node1 = head1.next;
-        HeroNode node2 = head2.next;
-        // 结果链表的第一个节点
-        HeroNode head = null ;
-        // 结果链表的最后一个节点
-        HeroNode rear = null ;
-        // 结果链表
-        SingleLinkedList list = new SingleLinkedList();
-
-        // 两个链表都还有数据
-        while (node1 != null && node2 != null){
-            if (node1.no <= node2.no){
-                // 如果node1节点数据 <= node2节点数据， 将node1节点插入新链表且node1指针后移
-                if (head == null){
-                    // 选定头节点
-                    head = node1 ;
-                } else {
-                    rear.next = node1 ;
-                }
-                rear = node1 ;
-                node1 = node1.next ;
-            } else {
-                // 反之，将node2节点插入新链表且node2指针后移
-                if (head == null){
-                    // 选定头节点
-                    head = node2 ;
-                } else {
-                    rear.next = node2 ;
-                }
-                rear = node2 ;
-                node2 = node2.next ;
-            }
-        }
-        // 处理剩余不为空的链表
-        if (node1 != null){
-            rear.next = node1 ;
-        } else {
-            rear.next = node2 ;
-        }
-        // 结果链表节点
-        list.getHead().next = head ;
-
-        System.out.println("\n链表合并后的结果:");
-        list.showLinkedList();
-
-        return head ;
-    }
-
-    /**
-     * 合并有序链表 方式二 (更加直观易懂)
-     * @param head1
-     * @param head2
-     * @return
-     */
-    public HeroNode mergeLinked2(HeroNode head1 , HeroNode head2){
-        if (head1.next == null){
-            return head2 ;
-        }
-        if (head2.next == null){
-            return head1 ;
-        }
-        // 两个链表都不为空，进行遍历
-        HeroNode node1 = head1.next;
-        HeroNode node2 = head2.next;
-        // 结果链表的第一个节点
-        HeroNode head = new HeroNode() ;
-        // 定义辅助指针，该指针永远指向第一个节点，不发生变化
-        HeroNode dummy = head ;
-
-        while (node1 != null && node2 != null){
-            if (node1.no <= node2.no){
-                // 如果node1.no <= node2.no  将node1节点拼接到head节点后,同时node1指针后移
-                head.next = node1 ;
-                node1 = node1.next ;
-            } else {
-                // 反之 将node2节点拼接到head节点后,同时node2指针后移
-                head.next = node2 ;
-                node2 = node2.next ;
-            }
-            // 在head节点拼接完成之后，将head节点后移，否则就是在不断的修改head.next 而不是向链表后面追加元素
-            head = head.next ;
-        }
-
-        // 后续链表元素追加
-        if (node1 != null){
-            head.next = node1 ;
-        } else {
-            head.next = node2 ;
-        }
-
-        SingleLinkedList list = new SingleLinkedList();
-        list.getHead().next = dummy.next ;
-
-        System.out.println("\n方式二，链表合并后的结果:");
-        list.showLinkedList();
-
-        return dummy.next ;
-    }
 }
 
 /**
