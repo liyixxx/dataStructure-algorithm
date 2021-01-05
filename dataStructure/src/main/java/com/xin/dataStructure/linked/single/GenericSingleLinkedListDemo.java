@@ -1,9 +1,9 @@
 package com.xin.dataStructure.linked.single;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -26,6 +26,7 @@ public class GenericSingleLinkedListDemo {
         list.addNode("伊泽瑞尔",null);
         list.addNode("卡莎",null);
         list.addNode("复仇之矛",null);
+        list.addNode("奥巴马",null);
         System.out.println("初始化链表 ~~~");
         list.showLinked();
 
@@ -52,12 +53,32 @@ public class GenericSingleLinkedListDemo {
         System.out.println("\n链表长度 length : " + list.length());
         System.out.println("链表数据最大ID maxId : " + list.getMaxId());
 
+        // ------------------------------------------------------- interview question
+        //                 一般都是传入链表的头节点，返回操作后的新链表的头节点
+
+        //1. 求倒数第K个节点
+        list.getLastIndexNode(1);
+        //2. 链表反转
+        // list.reverse();
+        // list.showLinked();
+        //3. 逆序打印
+        list.reversePrint();
+        //3.5 链表排序 -- 后续添加
+
+        //4. 合并两个有序的单链表，要求结果依旧有序
+        GenericSingleLinkedList<String> list1 = new GenericSingleLinkedList<String>();
+        list1.addNode("劫",null);
+        list1.addNode("小鱼人",null);
+        list1.addNode("男刀",3);
+        list.mergeLinked(list1);
     }
+
 }
 
 class GenericSingleLinkedList<T>{
 
     /** 头节点 */
+    @Getter
     private TNode<T> head ;
 
     /** 节点类 */
@@ -105,7 +126,7 @@ class GenericSingleLinkedList<T>{
     public void addNode( T data , Integer id ) {
         TNode<T> node = this.head;
         TNode<T> entry = null ;
-        // id 冲突问题
+        // FIXME: ID冲突问题
         if (id == null){
             entry = new TNode<>(atomicId.getAndIncrement(),data);
         } else {
@@ -291,4 +312,109 @@ class GenericSingleLinkedList<T>{
         return length ;
     }
 
+    /**
+     * 获取倒数第 index 个节点的信息
+     * @param index
+     * @return
+     */
+    public Object getLastIndexNode(int index){
+        if (index <= 0 || index > length()){
+            return null ;
+        }
+        TNode node = this.head.next ;
+        for (int i = 0; i < length() - index; i++) {
+            node = node.next ;
+        }
+        return node.data ;
+    }
+
+    /**
+     * 链表反转
+     */
+    public void reverse(){
+        if (head.next == null){
+            return;
+        }
+        // 新的链表的头节点
+        TNode newHead = new TNode();
+        // 当前遍历节点
+        TNode node = this.head.next;
+        // 存放node.next的临时节点
+        TNode next = null ;
+
+        // 遍历反转
+        while (node != null){
+            // 先保存临时节点
+            next = node.next ;
+
+            // 将该节点指向新链表头部
+            node.next = newHead.next;
+
+            // 头插
+            newHead.next = node ;
+
+            // 节点指针后移
+            node = next ;
+        }
+        // 修改源链表指向
+        head.next = newHead.next ;
+    }
+
+    /**
+     * 逆序打印
+     */
+    public void reversePrint(){
+        if (head.next == null){
+            return;
+        }
+        TNode node = head.next;
+        Stack<TNode> stack = new Stack<>();
+        while (node != null){
+            stack.push(node);
+            node = node.next;
+        }
+        while (!stack.isEmpty()){
+            System.out.println(stack.pop());
+        }
+    }
+
+    /**
+     * 合并链表
+     * @param list  应该传入的是链表的head节点
+     * @return
+     */
+    public TNode<T> mergeLinked(GenericSingleLinkedList<T> list){
+        if (head.next == null){
+            return list.getHead().next ;
+        }
+        if (list.getHead().next == null){
+            return head.next ;
+        }
+        TNode node1 = head.next;
+        TNode node2 = list.getHead().next;
+
+        // 结果链表的第一个节点
+        TNode head = new TNode() ;
+        // 定义辅助指针，该指针永远指向第一个节点，不发生变化
+        TNode dummy = head ;
+
+        while (node1 != null && node2!= null){
+            if (node1.id <= node2.id){
+                head.next = node1 ;
+                node1 = node1.next ;
+            } else {
+                head.next = node2;
+                node2 = node2.next;
+            }
+            head = head.next ;
+        }
+        // 后续链表元素追加
+        if (node1 != null){
+            head.next = node1 ;
+        } else {
+            head.next = node2 ;
+        }
+        // 返回第一个节点
+        return dummy.next;
+    }
 }
