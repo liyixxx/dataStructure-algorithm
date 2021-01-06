@@ -30,7 +30,12 @@ public class DoubleLinkedListDemo {
         list.update(new DoubleHeroNode(4,"剑鬼","见鬼"));
         System.out.println("update : ");
         list.showLinked();
+
+        System.out.println("add index : ");
+        list.addNode(new DoubleHeroNode(2,"狂战","红狗"),2);
+        list.showLinked();
     }
+
 }
 
 
@@ -52,6 +57,42 @@ class DoubleLinkedList{
         curr.setNext(entry);
         // 让新节点的pre 指向源链表的最后一个节点
         entry.setPre(curr);
+    }
+
+    /**
+     * 向指定位置添加节点
+     * @param entry     数据
+     * @param index     索引
+     */
+    public void addNode(DoubleHeroNode entry , int index){
+        if (index<0 || index>length()-1){
+            System.out.println("参数 index 不符合规则");
+        }
+        DoubleHeroNode curr = head.getNext();
+        for (int i = 0; i < length() -1 ; i++) {
+            if (i == index){
+                break;
+            }
+            curr = curr.getNext();
+        }
+        /**
+         * 插入节点数据,有链表如下：
+         *      A -- C -- W -- E -- G
+         *  在index=2 处插入数据D , 插入后链表为： A-C-D-W-E-G
+         *      1. 将链表移动到index=2的位置，即W,让该位置记录为curr，插入的数据记为entry
+         *      2. 开始数据插入：
+         *          让C.next指向插入数据entry  ==>  curr.pre.next = entry
+         *          让W.pre指向插入数据entry   ==>  curr.pre = entry
+         *          让插入数据entry.pre指向C   ==>  entry.pre = curr.pre
+         *          让插入数据entry.next指向W  ==>  entry.next = curr
+         *
+         */
+        curr.getPre().setNext(entry);
+        curr.setPre(entry);
+
+        entry.setPre(curr.getPre());
+        entry.setNext(curr);
+
     }
 
     /**
@@ -129,9 +170,27 @@ class DoubleLinkedList{
         }
     }
 
-    private Boolean isEmpty(){
+    /**
+     * 判断是否为空链表
+     * @return
+     */
+    public Boolean isEmpty(){
         return (head.getNext()) == null ;
     }
+
+    public int length(){
+        if (isEmpty()){
+            return 0 ;
+        }
+        DoubleHeroNode curr = head.getNext();
+        int len = 0 ;
+        while (curr != null){
+            len ++ ;
+            curr = curr.getNext() ;
+        }
+        return len ;
+    }
+
 }
 
 @NoArgsConstructor
