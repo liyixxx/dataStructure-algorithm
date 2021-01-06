@@ -16,10 +16,10 @@ public class SingleLinkedListDemo {
 
     public static void main(String[] args) {
         // 初始化节点数据
-        HeroNode hero1 = new HeroNode(5,"疾风剑豪","快乐风男");
-        HeroNode hero2 = new HeroNode(7,"德玛西亚之力","德玛");
-        HeroNode hero3 = new HeroNode(11,"发条魔灵","发条");
-        HeroNode hero4 = new HeroNode(2,"赏金猎人","MF");
+        SingleHeroNode hero1 = new SingleHeroNode(5,"疾风剑豪","快乐风男");
+        SingleHeroNode hero2 = new SingleHeroNode(7,"德玛西亚之力","德玛");
+        SingleHeroNode hero3 = new SingleHeroNode(11,"发条魔灵","发条");
+        SingleHeroNode hero4 = new SingleHeroNode(2,"赏金猎人","MF");
         SingleLinkedList linkedList = new SingleLinkedList();
 
         // 添加节点
@@ -41,7 +41,7 @@ public class SingleLinkedListDemo {
 
         // 修改节点数据
         System.out.println("修改节点信息 ::");
-        linkedList.update(new HeroNode(4,"探险家","EZ"));
+        linkedList.update(new SingleHeroNode(4,"探险家","EZ"));
 
         // 显示修改后的链表信息
         linkedList.showLinkedList();
@@ -60,10 +60,10 @@ public class SingleLinkedListDemo {
         System.out.println("\n------------------------------------------------------- some interview question --> test ：");
         // 初始数据
         SingleLinkedList interview = new SingleLinkedList();
-        interview.addNode(new HeroNode(1,"疾风剑豪","快乐风男"));
-        interview.addNode(new HeroNode(2,"德玛西亚之力","德玛"));
-        interview.addNode(new HeroNode(3,"发条魔灵","发条"));
-        interview.addNode(new HeroNode(4,"赏金猎人","MF"));
+        interview.addNode(new SingleHeroNode(1,"疾风剑豪","快乐风男"));
+        interview.addNode(new SingleHeroNode(2,"德玛西亚之力","德玛"));
+        interview.addNode(new SingleHeroNode(3,"发条魔灵","发条"));
+        interview.addNode(new SingleHeroNode(4,"赏金猎人","MF"));
         System.out.println("init linkedList");
         interview.showLinkedList();
 
@@ -90,7 +90,7 @@ public class SingleLinkedListDemo {
      * @param head1     传入链表1的头节点
      * @param head2     传入链表2的头节点
      */
-    public static HeroNode mergeLinked(HeroNode head1 , HeroNode head2){
+    public static SingleHeroNode mergeLinked(SingleHeroNode head1 , SingleHeroNode head2){
         if (head1.next == null){
             return head2 ;
         }
@@ -99,12 +99,12 @@ public class SingleLinkedListDemo {
         }
 
         // 两个链表都不为空，进行遍历
-        HeroNode node1 = head1.next;
-        HeroNode node2 = head2.next;
+        SingleHeroNode node1 = head1.next;
+        SingleHeroNode node2 = head2.next;
         // 结果链表的第一个节点
-        HeroNode head = null ;
+        SingleHeroNode head = null ;
         // 结果链表的最后一个节点
-        HeroNode rear = null ;
+        SingleHeroNode rear = null ;
         // 结果链表
         SingleLinkedList list = new SingleLinkedList();
 
@@ -153,7 +153,7 @@ public class SingleLinkedListDemo {
      * @param head2
      * @return
      */
-    public static HeroNode mergeLinked2(HeroNode head1 , HeroNode head2){
+    public static SingleHeroNode mergeLinked2(SingleHeroNode head1 , SingleHeroNode head2){
         if (head1.next == null){
             return head2 ;
         }
@@ -161,12 +161,12 @@ public class SingleLinkedListDemo {
             return head1 ;
         }
         // 两个链表都不为空，进行遍历
-        HeroNode node1 = head1.next;
-        HeroNode node2 = head2.next;
+        SingleHeroNode node1 = head1.next;
+        SingleHeroNode node2 = head2.next;
         // 结果链表的第一个节点
-        HeroNode head = new HeroNode() ;
+        SingleHeroNode head = new SingleHeroNode() ;
         // 定义辅助指针，该指针永远指向第一个节点，不发生变化
-        HeroNode dummy = head ;
+        SingleHeroNode dummy = head ;
 
         while (node1 != null && node2 != null){
             if (node1.no <= node2.no){
@@ -207,15 +207,15 @@ class SingleLinkedList{
 
     /** 头节点 , 无法修改 */
     @Getter
-    private HeroNode head  = new HeroNode();
+    private SingleHeroNode head  = new SingleHeroNode();
 
     /**
      * 添加节点，不考虑排名问题，直接向链表尾部进行节点添加
-     * @param heroNode
+     * @param singleHeroNode
      */
-    public void addNode(HeroNode heroNode) {
+    public void addNode(SingleHeroNode singleHeroNode) {
         // 头节点
-        HeroNode tempNode = head ;
+        SingleHeroNode tempNode = head ;
         while (true){
             if (null == tempNode.next) {
                 break;
@@ -224,17 +224,17 @@ class SingleLinkedList{
             tempNode = tempNode.next ;
         }
         // 向链表末尾添加
-        tempNode.next = heroNode ;
+        tempNode.next = singleHeroNode;
     }
 
     /**
      * 添加节点 考虑排名问题
      *      按照排名来进行节点添加
      *      如果目标排名已经存在，给出错误提示
-     * @param heroNode
+     * @param singleHeroNode
      */
-    public void addNodeByNo(HeroNode heroNode){
-        HeroNode tempNode = this.head;
+    public void addNodeByNo(SingleHeroNode singleHeroNode){
+        SingleHeroNode tempNode = this.head;
         // 目标排名是否存在
         Boolean flag = false ;
         while (true){
@@ -242,10 +242,10 @@ class SingleLinkedList{
                 // 最后一个节点
                 break;
             }
-            if (tempNode.next.no > heroNode.no){
+            if (tempNode.next.no > singleHeroNode.no){
                 // 找到目标节点位置 ==> 添加节点
                 break;
-            } else if (tempNode.next.no == heroNode.no){
+            } else if (tempNode.next.no == singleHeroNode.no){
                 // 目标排名已经存在
                 flag = true ;
                 break;
@@ -255,7 +255,7 @@ class SingleLinkedList{
         }
         // flag标识判断，决定是否添加节点
         if (flag){
-            System.out.printf("编号 %d 在链表中已经存在~,无法添加\n",heroNode.no);
+            System.out.printf("编号 %d 在链表中已经存在~,无法添加\n", singleHeroNode.no);
         } else {
             /**
              *  插入节点 ==> 修改链表的指针指向
@@ -267,20 +267,20 @@ class SingleLinkedList{
              *          data2.next = tempNode.next = data3
              *
              */
-            heroNode.next = tempNode.next;
-            tempNode.next = heroNode ;
+            singleHeroNode.next = tempNode.next;
+            tempNode.next = singleHeroNode;
         }
     }
 
     /**
      * 根据No 修改节点信息
-     * @param heroNode
+     * @param singleHeroNode
      */
-    public void update(HeroNode heroNode){
-        HeroNode tempNode = head;
+    public void update(SingleHeroNode singleHeroNode){
+        SingleHeroNode tempNode = head;
         boolean flag = false ;
         while (true){
-            if (tempNode.no == heroNode.no){
+            if (tempNode.no == singleHeroNode.no){
                 // 找到该节点信息
                 flag = true ;
                 break;
@@ -292,10 +292,10 @@ class SingleLinkedList{
         }
 
         if (flag){
-            tempNode.name = heroNode.name ;
-            tempNode.nickName = heroNode.nickName ;
+            tempNode.name = singleHeroNode.name ;
+            tempNode.nickName = singleHeroNode.nickName ;
         } else {
-            System.out.printf("没有找到编号 %d 的节点，无法修改\n", heroNode.no);
+            System.out.printf("没有找到编号 %d 的节点，无法修改\n", singleHeroNode.no);
         }
 
     }
@@ -304,7 +304,7 @@ class SingleLinkedList{
      * 删除链表的末尾节点
      */
     public void remove(){
-        HeroNode tempNode = this.head;
+        SingleHeroNode tempNode = this.head;
         if (tempNode.next == null){
             System.out.println("链表已经为空了~");
         }
@@ -326,10 +326,10 @@ class SingleLinkedList{
 
     /**
      * 删除链表指定节点
-     * @param heroNode
+     * @param singleHeroNode
      */
-    public void remove(HeroNode heroNode){
-        HeroNode tempNode = this.head;
+    public void remove(SingleHeroNode singleHeroNode){
+        SingleHeroNode tempNode = this.head;
         if (tempNode.next == null){
             System.out.println("链表已经为空了~");
         }
@@ -341,7 +341,7 @@ class SingleLinkedList{
                 // 尾节点
                 break;
             }
-            if (tempNode.next.no == heroNode.no){
+            if (tempNode.next.no == singleHeroNode.no){
                 // 待删除节点的前一个节点
                 flag = true ;
                 break;
@@ -356,7 +356,7 @@ class SingleLinkedList{
              */
             tempNode.next = tempNode.next.next ;
         } else {
-            System.out.printf("没有找到no = %d 的节点~",heroNode.no);
+            System.out.printf("没有找到no = %d 的节点~", singleHeroNode.no);
         }
 
 
@@ -371,7 +371,7 @@ class SingleLinkedList{
             return;
         }
         // 头节点
-        HeroNode tempNode = head.next;
+        SingleHeroNode tempNode = head.next;
         while (true){
             if (tempNode == null){
                 break;
@@ -398,7 +398,7 @@ class SingleLinkedList{
             return 0 ;
         }
         int length = 0 ;
-        HeroNode node = this.head.next;
+        SingleHeroNode node = this.head.next;
         while (node != null){
             length ++ ;
             node = node.next ;
@@ -411,11 +411,11 @@ class SingleLinkedList{
      * @param index
      * @return
      */
-    public HeroNode getLastIndexNode(int index){
+    public SingleHeroNode getLastIndexNode(int index){
         if (index <= 0 || index > length()){
             return null ;
         }
-        HeroNode node = this.head.next;
+        SingleHeroNode node = this.head.next;
         for (int i = 0; i < length() - index; i++) {
             node = node.next ;
         }
@@ -441,11 +441,11 @@ class SingleLinkedList{
             return;
         }
         // 新的head节点
-        HeroNode reverseHead = new HeroNode();
+        SingleHeroNode reverseHead = new SingleHeroNode();
         // 遍历
-        HeroNode node = this.head.next;
+        SingleHeroNode node = this.head.next;
         // 临时节点，存放node.next
-        HeroNode next = null ;
+        SingleHeroNode next = null ;
         while (node!=null){
             // 临时节点
             next = node.next ;
@@ -481,8 +481,8 @@ class SingleLinkedList{
             return;
         }
         // 创建栈
-        Stack stack = new Stack<HeroNode>();
-        HeroNode node = this.head.next;
+        Stack stack = new Stack<SingleHeroNode>();
+        SingleHeroNode node = this.head.next;
         while (node != null) {
             stack.push(node);
             node = node.next ;
@@ -501,7 +501,7 @@ class SingleLinkedList{
  */
 @ToString(exclude = "next")
 @NoArgsConstructor
-class HeroNode{
+class SingleHeroNode {
 
     /** 编号 */
     public int no ;
@@ -510,9 +510,9 @@ class HeroNode{
     /** 昵称 */
     public String nickName ;
     /** 下一节点 */
-    public HeroNode next ;
+    public SingleHeroNode next ;
 
-    public HeroNode(int no , String name , String nickName ){
+    public SingleHeroNode(int no , String name , String nickName ){
         this.no = no ;
         this.name = name ;
         this.nickName = nickName ;
