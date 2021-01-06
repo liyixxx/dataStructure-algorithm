@@ -1,4 +1,4 @@
-package com.xin.dataStructure.linked.single.Double;
+package com.xin.dataStructure.linked.Double;
 
 import lombok.Data;
 import lombok.Getter;
