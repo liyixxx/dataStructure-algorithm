@@ -88,10 +88,10 @@ class DoubleLinkedList{
          *
          */
         curr.getPre().setNext(entry);
-        curr.setPre(entry);
+        entry.setNext(curr);
 
         entry.setPre(curr.getPre());
-        entry.setNext(curr);
+        curr.setPre(entry);
 
     }
 
