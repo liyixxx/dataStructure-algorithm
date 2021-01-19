@@ -20,7 +20,7 @@ public class Josepfu {
         CircleSingleLinkedList circleList = new CircleSingleLinkedList();
 
         // init
-        circleList.addCHild(7);
+        circleList.init(7);
 
         // show
         circleList.showCircleLinked();
@@ -40,10 +40,10 @@ class CircleSingleLinkedList{
     private Child first = null ;
 
     /**
-     * 新增节点
+     * 创建环形链表
      * @param number
      */
-    public void addCHild(int number){
+    public void init(int number){
         if (number < 1){
             System.out.println(" index can not be less then one ...");
             return;
