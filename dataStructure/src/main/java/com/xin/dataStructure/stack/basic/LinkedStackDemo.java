@@ -1,4 +1,4 @@
-package com.xin.dataStructure.stack;
+package com.xin.dataStructure.stack.basic;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

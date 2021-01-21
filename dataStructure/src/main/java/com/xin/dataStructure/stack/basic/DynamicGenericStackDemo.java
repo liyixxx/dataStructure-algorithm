@@ -1,6 +1,4 @@
-package com.xin.dataStructure.stack;
-
-import cn.hutool.core.util.ObjectUtil;
+package com.xin.dataStructure.stack.basic;
 
 import java.util.Arrays;
 
