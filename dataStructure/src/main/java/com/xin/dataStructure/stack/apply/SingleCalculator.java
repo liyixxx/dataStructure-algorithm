@@ -14,7 +14,7 @@ public class SingleCalculator {
     public static void main(String[] args) {
         CalculatorStack<String> stack = new CalculatorStack<>();
 
-        String expression = "1+2*3+4/2+6-7" ;
+        String expression = "10+2*3+4/2/2+6-700" ;
         System.out.println(stack.execExpression(expression));
     }
 
@@ -130,6 +130,9 @@ class CalculatorStack <T>{
         CalculatorStack<Integer> numStack = new CalculatorStack<>();
         CalculatorStack<Character> operStack = new CalculatorStack<>();
 
+        // 用于连接连续数字的字符串
+        String connectStr = "" ;
+
         // 2. 遍历运算符
         char[] array = expression.toCharArray();
         for (int index = 0; index < array.length; index++) {
@@ -168,8 +171,19 @@ class CalculatorStack <T>{
                 }
 
             } else {
-                // 如果是数字的情况
-                numStack.push(array[index] - '0');
+                // 如果是数字的情况,需要判断是否为多位数
+
+                // 拼接字符串
+                connectStr += array[index];
+                if (index == array.length -1){
+                    numStack.push(Integer.parseInt(connectStr));
+                } else {
+                    if (this.isOper(array[index+1])){
+                        // 如果下一位时运算符，则入栈，否则就拼接数字
+                        numStack.push(Integer.parseInt(connectStr));
+                        connectStr = "" ;
+                    }
+                }
             }
 
             // 遍历到末尾时，计算总结果
@@ -185,6 +199,7 @@ class CalculatorStack <T>{
                     numStack.push(calcNum(numStack.pop(),numStack.pop(),operStack.pop()));
                 }
             }
+
         }
 
         return numStack.pop();
