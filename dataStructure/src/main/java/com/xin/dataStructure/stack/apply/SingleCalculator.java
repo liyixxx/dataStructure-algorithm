@@ -16,6 +16,9 @@ public class SingleCalculator {
 
         String expression = "10+2*3+4/2/5+6" ;
         System.out.println(stack.execExpression(expression));
+        String expressionV2 = "(10+2*3+4-2*3)/2/5+6" ;
+        System.out.println(stack.execExpressionV2(expressionV2));
+
     }
 
 }
@@ -205,6 +208,95 @@ class CalculatorStack <T>{
 
     }
 
+    // --------------------------------------------- calculator  add ()
+
+    /**
+     * 计算器模拟 添加()运算符处理
+     * @param expression
+     * @return
+     */
+    public double execExpressionV2(String expression){
+        // 数栈和运算符栈
+        CalculatorStack<Double> numStack = new CalculatorStack<>();
+        CalculatorStack<Character> operStack = new CalculatorStack<>();
+        // 连接数
+        String connectNumStr = "";
+        // 字符数组
+        char[] array = expression.toCharArray();
+
+        for (int index = 0; index < array.length; index++) {
+
+            // 如果是 '(' 则直接放入运算符栈
+            if (array[index] == '('){
+                operStack.push('(');
+                continue;
+            }
+
+            if (!this.isOper(array[index])){
+                // 如果是数,则判断是否为多位数，再入数栈
+                connectNumStr += array[index] ;
+                if (index == array.length -1){
+                    // 最后一个元素为数，直接入栈
+                    numStack.push(Double.parseDouble(connectNumStr));
+                } else {
+                    if (this.isOper(array[index+1])){
+                        // 如果下一位为运算符，则入栈
+                        numStack.push(Double.parseDouble(connectNumStr));
+                        connectNumStr = "" ;
+                    }
+                }
+            } else {
+                // 运算符的情况
+
+                // 1. 栈中没有运算符，直接入栈
+                if (operStack.isEmpty()){
+                    operStack.push(array[index]);
+                    continue;
+                } else {
+                    //2. 栈中有运算符 特殊考虑 '(' 和 ')'
+
+                    // 2.1 考虑 ')' , 将()内的计算式处理
+                    if (')' == array[index]){
+                        while ('(' != operStack.peek()){
+                            double r = this.calcNum(numStack.pop(), numStack.pop(), operStack.pop());
+                            numStack.push(r);
+                        }
+                        // 将 '(' 出栈
+                        operStack.pop();
+                    } else {
+                        // 2.2 处理其他运算符，优先级比较
+                        if (this.priority(array[index]) <= this.priority(operStack.peek())){
+                            // 2.2.1  当前优先级<= 栈中运算符优先级，进行计算，然后将当前运算符入栈
+                            numStack.push(this.calcNum(numStack.pop(),numStack.pop(),operStack.pop()));
+                            operStack.push(array[index]);
+                        } else {
+                            // 2.2.2  当前运算符优先级大，入栈
+                            operStack.push(array[index]);
+                        }
+                    }
+                }
+
+            }
+
+            // 遍历到尾部时，处理结果
+            if ( index == array.length -1 ){
+                if (this.isOper(array[index]) && ')' != array[index]){
+                    throw new RuntimeException("表达式异常 ： 以非法的运算符为结尾 ....");
+                }
+                while (true){
+                    if (operStack.isEmpty()){
+                        break;
+                    }
+                    // 将计算结果push到数栈，直到计算结束【数栈剩余总计算结果】
+                    numStack.push(calcNum(numStack.pop(),numStack.pop(),operStack.pop()));
+                }
+            }
+
+        }
+
+        return numStack.pop() ;
+    }
+
     /**
      * 计算结果
      * @param number1
@@ -240,7 +332,8 @@ class CalculatorStack <T>{
      * @return
      */
     public boolean isOper(char oper){
-        return oper == '+' || oper == '-' || oper == '*' || oper == '/' ;
+        // return oper == '+' || oper == '-' || oper == '*' || oper == '/' ;
+        return oper == '+' || oper == '-' || oper == '*' || oper == '/' || oper == '(' || oper == ')';
     }
 
 
