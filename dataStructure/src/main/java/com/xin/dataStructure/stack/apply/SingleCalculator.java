@@ -14,7 +14,7 @@ public class SingleCalculator {
     public static void main(String[] args) {
         CalculatorStack<String> stack = new CalculatorStack<>();
 
-        String expression = "10+2*3+4/2/2+6-700" ;
+        String expression = "10+2*3+4/2/5+6" ;
         System.out.println(stack.execExpression(expression));
     }
 
@@ -120,14 +120,14 @@ class CalculatorStack <T>{
     // --------------------------------------------- calculator
 
     /**
-     * 计算
+     * 计算器模拟
      * @param expression
      * @return
      */
-    public int execExpression(String expression){
+    public double execExpression(String expression){
 
         // 1. 准备数栈和运算符栈
-        CalculatorStack<Integer> numStack = new CalculatorStack<>();
+        CalculatorStack<Double> numStack = new CalculatorStack<>();
         CalculatorStack<Character> operStack = new CalculatorStack<>();
 
         // 用于连接连续数字的字符串
@@ -143,7 +143,6 @@ class CalculatorStack <T>{
                 if (operStack.isEmpty()){
                     // 运算符栈没有内容，直接放入运算符
                     operStack.push(array[index]);
-                    // continue , 表达式不应该以运算符结尾
                     continue;
                 }
 
@@ -155,7 +154,7 @@ class CalculatorStack <T>{
                 // 运算符栈存在内容，需要比较优先级
                 if (this.priority(array[index]) <= this.priority(operStack.peek())){
                     // 如果优先级小于或者等于栈中运算符，则需要进行计算处理
-                    int result = 0;
+                    double result = 0d;
                     try {
                         // 避免除0
                         result = this.calcNum(numStack.pop(), numStack.pop(), operStack.pop());
@@ -176,11 +175,11 @@ class CalculatorStack <T>{
                 // 拼接字符串
                 connectStr += array[index];
                 if (index == array.length -1){
-                    numStack.push(Integer.parseInt(connectStr));
+                    numStack.push(Double.parseDouble(connectStr));
                 } else {
                     if (this.isOper(array[index+1])){
                         // 如果下一位时运算符，则入栈，否则就拼接数字
-                        numStack.push(Integer.parseInt(connectStr));
+                        numStack.push(Double.parseDouble(connectStr));
                         connectStr = "" ;
                     }
                 }
@@ -213,8 +212,8 @@ class CalculatorStack <T>{
      * @param operator
      * @return
      */
-    private int calcNum(Integer number1, Integer number2, Character operator) {
-        int result = 0 ;
+    private double calcNum(Double number1, Double number2, Character operator) {
+        double result = 0 ;
         switch (operator){
             case '+':
                 result = number2 + number1 ;
