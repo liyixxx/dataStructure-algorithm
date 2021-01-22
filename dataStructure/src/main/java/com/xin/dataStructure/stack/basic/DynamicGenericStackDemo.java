@@ -171,7 +171,7 @@ class DynamicStack <T>{
     /**
      * 扩容
      */
-    public void expandStack(){
+    private void expandStack(){
         int oldCapacity = maxSize;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
         stack = Arrays.copyOf(stack , newCapacity) ;
