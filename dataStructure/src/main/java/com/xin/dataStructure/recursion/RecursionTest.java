@@ -25,6 +25,25 @@ public class RecursionTest {
         }
         System.out.println("sum = " + sum);
 
+        // 斐波那契数列
+        System.out.println("fibonacci(8) = " + fibonacci(8));
+
+    }
+
+    /**
+     * 斐波那契数列
+     * @param number
+     */
+    private static int fibonacci(int number) {
+        if (number == 0) {
+            return 0 ;
+        } else if (number == 1){
+            return 1 ;
+        }
+        if (number > 1){
+            return fibonacci(number-1) + fibonacci(number-2);
+        }
+        return -1 ;
     }
 
     /**
