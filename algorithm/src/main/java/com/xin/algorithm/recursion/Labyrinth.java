@@ -1,4 +1,4 @@
-package com.xin.dataStructure.recursion;
+package com.xin.algorithm.recursion;
 
 /**
  * @Auther: xin
