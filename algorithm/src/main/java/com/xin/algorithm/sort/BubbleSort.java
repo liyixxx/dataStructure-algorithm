@@ -69,6 +69,8 @@ public class BubbleSort {
         bubbleSortV2(testArr);
         Instant end = Instant.now();
         long used = ChronoUnit.SECONDS.between(start, end);
+
+        // 10w  ---  15s
         System.out.println("冒泡排序耗时 : " + used + " 秒");
 
     }
