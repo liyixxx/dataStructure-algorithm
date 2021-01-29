@@ -1,5 +1,6 @@
 package com.xin.algorithm.recursion;
 
+
 /**
  * @Auther: xin
  * @DATE: 2021/1/26 15:08
@@ -10,7 +11,6 @@ package com.xin.algorithm.recursion;
 public class Labyrinth {
 
     public static void main(String[] args) {
-        int [][] map = new int[10][9] ;
 
         // 颜色输出测试
         // System.out.println("\033[30m" + "write");
@@ -19,32 +19,32 @@ public class Labyrinth {
         // System.out.println("\033[37m" + "gray");
 
         // 初始化迷宫
-        initMap(map);
+        int [][] labyrinth = initLabyrinth(10,9);
 
         System.out.println("\033[30m" + "初始化迷宫 : ");
         for (int i = 0 ; i < 10 ; i++){
             for (int j = 0 ; j < 9 ; j++){
-                if (map[i][j] == 0 ){
-                    System.out.print("\033[30m" + map[i][j] + " ");
+                if (labyrinth[i][j] == 0 ){
+                    System.out.print("\033[30m" + labyrinth[i][j] + " ");
                 } else {
-                    System.out.print("\033[31m" + map[i][j] + " ");
+                    System.out.print("\033[31m" + labyrinth[i][j] + " ");
                 }
             }
             System.out.println();
         }
 
         // 走迷宫
-        goWay(map,1,1);
+        goWay(labyrinth,1,1);
 
         System.out.println("\033[30m" + "走过并标识后的迷宫 : ");
         for (int i = 0 ; i < 10 ; i++){
             for (int j = 0 ; j < 9 ; j++){
-                if (map[i][j] == 2){
-                    System.out.print("\033[32m" + map[i][j] + " ");
-                } else if (map[i][j] == 1) {
-                    System.out.print("\033[31m" + map[i][j] + " ");
+                if (labyrinth[i][j] == 2){
+                    System.out.print("\033[32m" + labyrinth[i][j] + " ");
+                } else if (labyrinth[i][j] == 1) {
+                    System.out.print("\033[31m" + labyrinth[i][j] + " ");
                 } else {
-                    System.out.print("\033[30m" + map[i][j] + " ");
+                    System.out.print("\033[30m" + labyrinth[i][j] + " ");
                 }
             }
             System.out.println();
@@ -57,7 +57,7 @@ public class Labyrinth {
     /**
      *
      * 约定：
-     *     1. 当 map[i][j] 为 0 表示该点没有走过 当为 1 表示墙 ； 2 表示通路可以走 ； 3 表示该点已经 走过，但是走不通
+     *     1. 当 labyrinth[i][j] 为 0 表示该点没有走过 当为 1 表示墙 ； 2 表示通路可以走 ； 3 表示该点已经 走过，但是走不通
      *     2. 在走迷宫时，需要确定一个策略(方法) 下->右->上->左 , 如果该点走不通，再回溯
      *
      *
@@ -111,30 +111,32 @@ public class Labyrinth {
 
     /**
      * 初始化迷宫
-     *
-     * 1 : 表示墙壁
-     * 0 : 能行走的点
-     * @param map
+     * @param row       行
+     * @param column    列
+     * @return
      */
-    private static void initMap(int[][] map) {
+    private static int[][] initLabyrinth(int row , int column) {
+        int [][] labyrinth = new int[row][column];
         for (int i = 0 ; i < 10 ; i ++){
-            map[i][0] = 1 ;
-            map[i][8] = 1 ;
+            labyrinth[i][0] = 1 ;
+            labyrinth[i][8] = 1 ;
         }
 
         for (int j = 0 ; j < 9 ; j++){
-            map[0][j] = 1 ;
-            map[9][j] = 1 ;
+            labyrinth[0][j] = 1 ;
+            labyrinth[9][j] = 1 ;
         }
 
-        map[3][4] = 1 ;
-        map[2][5] = 1 ;
-        map[7][7] = 1 ;
-        map[4][6] = 1 ;
-        map[4][1] = 1 ;
-        map[4][2] = 1 ;
-        map[4][3] = 1 ;
+        labyrinth[3][4] = 1 ;
+        labyrinth[2][5] = 1 ;
+        labyrinth[7][7] = 1 ;
+        labyrinth[4][6] = 1 ;
+        labyrinth[6][4] = 1 ;
+        labyrinth[4][1] = 1 ;
+        labyrinth[4][2] = 1 ;
+        labyrinth[4][3] = 1 ;
 
+        return labyrinth ;
     }
 
 }

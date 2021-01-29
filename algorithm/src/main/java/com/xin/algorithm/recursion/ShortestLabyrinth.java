@@ -17,16 +17,15 @@ import java.util.stream.Collectors;
 public class ShortestLabyrinth {
 
     public static void main(String[] args) {
-        int [][] map = initMap(10 , 9 );
-        getStepCount(map);
+        int [][] lalbyrinth = unitLabyrinth(10 , 9 );
 
         System.out.println("\033[30m" + "初始化迷宫 : ");
         for (int i = 0 ; i < 10 ; i++){
             for (int j = 0 ; j < 9 ; j++){
-                if (map[i][j] == 0 ){
-                    System.out.print("\033[30m" + map[i][j] + " ");
+                if (lalbyrinth[i][j] == 0 ){
+                    System.out.print("\033[30m" + lalbyrinth[i][j] + " ");
                 } else {
-                    System.out.print("\033[31m" + map[i][j] + " ");
+                    System.out.print("\033[31m" + lalbyrinth[i][j] + " ");
                 }
             }
             System.out.println();
@@ -42,25 +41,25 @@ public class ShortestLabyrinth {
             Integer strategyType = (Integer) objectMap.get("code");
             String desc = (String) objectMap.get("desc");
 
-            goWay(map,1,1,strategyType);
-            int stepCount = getStepCount(map);
+            goWay(lalbyrinth,1,1,strategyType);
+            int stepCount = getStepCount(lalbyrinth);
 
             System.out.println("\033[30m" + "starge " + desc +  "使用的步长 : " + stepCount);
             System.out.println("\033[30m" + "starge " + desc +  "走过并标识后的迷宫 : ");
             for (int i = 0 ; i < 10 ; i++){
                 for (int j = 0 ; j < 9 ; j++){
-                    if (map[i][j] == 2){
-                        System.out.print("\033[32m" + map[i][j] + " ");
-                    } else if (map[i][j] == 1) {
-                        System.out.print("\033[31m" + map[i][j] + " ");
+                    if (lalbyrinth[i][j] == 2){
+                        System.out.print("\033[32m" + lalbyrinth[i][j] + " ");
+                    } else if (lalbyrinth[i][j] == 1) {
+                        System.out.print("\033[31m" + lalbyrinth[i][j] + " ");
                     } else {
-                        System.out.print("\033[30m" + map[i][j] + " ");
+                        System.out.print("\033[30m" + lalbyrinth[i][j] + " ");
                     }
                 }
                 System.out.println();
             }
 
-            map = initMap(map.length , map[0].length);
+            lalbyrinth = unitLabyrinth(lalbyrinth.length , lalbyrinth[0].length);
             stepStarge.put(strategyType,stepCount);
         }
 
@@ -212,27 +211,30 @@ public class ShortestLabyrinth {
      * @param column    列
      * @return
      */
-    private static int[][] initMap(int row , int column) {
-        int [][] map = new int[row][column];
+    private static int[][] unitLabyrinth(int row , int column) {
+        int [][] labyrinth = new int[row][column];
         for (int i = 0 ; i < 10 ; i ++){
-            map[i][0] = 1 ;
-            map[i][8] = 1 ;
+            labyrinth[i][0] = 1 ;
+            labyrinth[i][8] = 1 ;
         }
 
         for (int j = 0 ; j < 9 ; j++){
-            map[0][j] = 1 ;
-            map[9][j] = 1 ;
+            labyrinth[0][j] = 1 ;
+            labyrinth[9][j] = 1 ;
         }
 
-        map[3][4] = 1 ;
-        map[2][5] = 1 ;
-        map[7][7] = 1 ;
-        map[4][6] = 1 ;
-        map[4][1] = 1 ;
-        map[4][2] = 1 ;
-        map[4][3] = 1 ;
+        labyrinth[3][4] = 1 ;
+        labyrinth[2][5] = 1 ;
+        labyrinth[7][7] = 1 ;
+        labyrinth[4][6] = 1 ;
+        labyrinth[4][1] = 1 ;
+        labyrinth[4][2] = 1 ;
+        labyrinth[4][3] = 1 ;
+        labyrinth[6][4] = 1 ;
+        labyrinth[6][3] = 1 ;
+        labyrinth[7][3] = 1 ;
 
-        return map ;
+        return labyrinth ;
     }
 }
 
