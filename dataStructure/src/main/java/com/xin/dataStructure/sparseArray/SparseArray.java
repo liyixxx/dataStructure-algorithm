@@ -22,7 +22,7 @@ import java.util.List;
 public class SparseArray {
 
     /** 文件路径 */
-    private static final String FILE_PATH = System.getProperty("user.dir") + File.separator+"files" + File.separator + "mapData.txt" ;
+    private static final String FILE_PATH = System.getProperty("user.dir") + File.separator+"files"+File.separator+"sparseArray" + File.separator + "mapData.txt" ;
 
     public static void main(String[] args) {
         // 初始二维数组
